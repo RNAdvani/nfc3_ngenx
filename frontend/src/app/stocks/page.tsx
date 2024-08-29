@@ -12,7 +12,7 @@ const Dashboard = () => {
   return (
     <div className='p-6 flex flex-col gap-2 w-full'>
         <div className='flex justify-end w-full'>
-          <Input placeholder='Search Stocks' className='w-[15rem]' />
+          <SearchBar /> 
         </div>
         <div className='grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-4'>
             <CardWithForm  symbol='^NSEI' />
@@ -23,11 +23,12 @@ const Dashboard = () => {
 
         </div>
         <div className='grid gap-6 grid-cols-5'>
-          <DataTableDemo />
-        </div>
-        <div className="flex-0.35">
-          <div className="font-bold text-lg mb-2">Buys</div>
+          <div className="col-span-3">
+            <DataTableDemo />
+          </div>
+          <div className="col-span-2">
           <WatchListTable />
+          </div>
         </div>
       </div>
   );

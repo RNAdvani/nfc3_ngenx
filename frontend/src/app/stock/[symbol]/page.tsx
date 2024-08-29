@@ -1,5 +1,7 @@
-import { useRouter } from 'next/router';
-import React from 'react'
+"use client"
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import BigStockChart from '@/components/charts/big-chart';
 
 
 interface Props {
@@ -7,15 +9,15 @@ interface Props {
 }
 
 const SingleStockPage: React.FC<Props> = ({params}) => {
-  const symbol = params.symbol;
-
-  
-    // symbol will be an array if using catch-all routes (e.g., [...symbol])
-   
-
+  const symbol = params.symbol;   
     
   return (
-    <div>{symbol}</div>
+    <div className='w-full flex justify-center items-center'>
+        <div className='flex w-full gap-2 overflow-hidden p-6 items-center'>
+           <BigStockChart symbol={symbol} className='h-[25rem]' />
+        </div>
+          <Button className='mr-2'>Analyze</Button>
+    </div>
   )
 }
 

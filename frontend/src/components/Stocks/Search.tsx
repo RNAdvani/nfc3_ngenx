@@ -1,6 +1,9 @@
 // components/SearchBar.tsx
 
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { Input } from "../ui/input";
+import { SEARCH_STOCKS } from "@/apiUrl";
+import axios from "axios";
 
 const SearchBar: React.FC = () => {
   const [query, setQuery] = useState("");
@@ -14,12 +17,30 @@ const SearchBar: React.FC = () => {
     console.log("Logged out");
   };
 
+  const handleSearch = useCallback(async()=>{
+      try {
+        const res = await axios.get(SEARCH_STOCKS, {
+          params: {
+            q:query,
+          },
+        });
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+  },[query])
+
+  useEffect(()=>{
+    if(query){
+      handleSearch();
+    }
+  },[query])
+
   return (
     <div className=" top-4 right-4 flex items-center space-x-4 p-2">
       <div className="relative w-full max-w-xs">
-        <input
+        <Input
           type="text"
-          value={query}
           onChange={handleChange}
           placeholder="Search..."
           className="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#000c08] text-white"
@@ -43,7 +64,7 @@ const SearchBar: React.FC = () => {
       </div>
       <button
         onClick={handleLogout}
-        className="bg-[#18342b] hover:bg-[#000c08] text-white font-semibold py-2 px-4 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+        className="bg-[#18342b] hover:bg-lightgreen duration-300 hover:text-background text-white font-semibold py-2 px-4 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500"
       >
         Logout
       </button>

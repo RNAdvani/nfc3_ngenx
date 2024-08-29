@@ -200,7 +200,7 @@ export function WatchListTable() {
   })
 
   return (
-    <div className="w-full col-span-2">
+    <div className="w-full ">
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter emails..."

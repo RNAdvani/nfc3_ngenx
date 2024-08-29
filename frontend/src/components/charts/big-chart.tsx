@@ -5,7 +5,7 @@ import 'chartjs-adapter-date-fns'; // Import the date adapter
 import axios from 'axios';
 import { GET_STOCK_DATA } from '@/apiUrl';
 
-const StockChart= ({symbol,className}:{symbol:string,className?:string}) => {
+const BigStockChart= ({symbol,className}:{symbol:string,className?:string}) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
   const [chartInstance, setChartInstance] = useState<Chart | null>(null);
   const [name,setName] = useState("")
@@ -61,7 +61,7 @@ const StockChart= ({symbol,className}:{symbol:string,className?:string}) => {
               scales: {
                 x: {
                   type: 'time',
-                  display: false, // Hide x-axis
+                  display: true, // Hide x-axis
                 },
                 y: {
                   beginAtZero: false,
@@ -97,4 +97,4 @@ const StockChart= ({symbol,className}:{symbol:string,className?:string}) => {
   );
 };
 
-export default StockChart;
+export default BigStockChart;
