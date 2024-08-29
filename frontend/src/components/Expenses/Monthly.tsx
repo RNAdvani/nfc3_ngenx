@@ -40,7 +40,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function Component() {
+export function MonthlyGraph() {
   return (
     <Card>
       <CardHeader>
