@@ -1,9 +1,10 @@
+import { Charts } from '@/components/DashboardPage'
 import React from 'react'
 
 const Dashboard = () => {
   return (
-    <div>
-      Dashboard
+    <div className=''>
+      <Charts />
     </div>
   )
 }
