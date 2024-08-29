@@ -1,88 +1,86 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_absolute_error, mean_squared_error
-import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv1D, MaxPooling1D, Flatten, Dense
-from tensorflow.keras.optimizers import Adam
+import xgboost as xgb
 
 # Load the dataset
-file_path = './ai/expense-prediction/monthly_summary.csv'
+file_path = './ai/expense-prediction/modified_final.csv'
 data = pd.read_csv(file_path)
 
-# Aggregate data by Year and Month
-category_columns = data.columns[2:]  # Assuming first two columns are Year and Month
-data_aggregated = data.groupby(['Year', 'Month'])[category_columns].sum().reset_index()
+# Inspect the columns and first few rows
+print("Columns in the dataset:", data.columns)
+print("First few rows of the dataset:")
+print(data.head())
 
-# Define features and target
-X = data_aggregated.drop(columns=['Year', 'Month'])
-X = X.fillna(0)  # Replace NaNs with 0
+# Convert the 'Date' column to datetime if it exists
+if 'Date' in data.columns:
+    data['Date'] = pd.to_datetime(data['Date'], format='%d-%m-%Y', errors='coerce')
+    data = data.dropna(subset=['Date'])
+    data.set_index('Date', inplace=True)
+else:
+    raise ValueError("No 'Date' column found in the dataset. Please ensure your dataset has a 'Date' column.")
 
-# Target is the sum of all category expenses
-y = X.sum(axis=1)
+# Check the data after setting 'Date' as the index
+print("Data after setting 'Date' as index:")
+print(data.head())
+
+# Drop rows where all category values are zero
+data = data[(data != 0).any(axis=1)]
+
+# Check the data after dropping rows with all-zero values
+print("Data after removing rows with all zeros:")
+print(data.head())
+
+# Aggregate data monthly if needed (assuming the data is already monthly if the 'Date' column is set as index)
+monthly_data = data.resample('M').sum()
+
+# Remove months where total expenses are zero
+monthly_data = monthly_data[monthly_data.sum(axis=1) != 0]
+
+# Check if monthly_data is empty
+if monthly_data.empty:
+    raise ValueError("Aggregated monthly data is empty or all months have zero totals. Check your input data.")
+
+print("Filtered Monthly data:")
+print(monthly_data.head())
+
+# Define features (all category columns) and target (sum of all categories)
+X = monthly_data.fillna(0)  # Replace NaNs with 0
+y = X.sum(axis=1)  # Sum across all categories
 
 # Standardize features
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
-# Reshape data for CNN
-X_reshaped = np.expand_dims(X_scaled, axis=2)  # Add channel dimension
+# Split data into training and test sets (using time-based split for small datasets)
+train_size = int(len(X) * 0.8)
+X_train, X_test = X_scaled[:train_size], X_scaled[train_size:]
+y_train, y_test = y[:train_size], y[train_size:]
 
-# Split data into training and test sets
-X_train, X_test, y_train, y_test = train_test_split(X_reshaped, y, test_size=0.2, random_state=42)
-
-# Build the CNN model
-model = Sequential([
-    Conv1D(filters=64, kernel_size=3, activation='relu', input_shape=(X_train.shape[1], X_train.shape[2])),
-    MaxPooling1D(pool_size=2),
-    Conv1D(filters=128, kernel_size=3, activation='relu'),
-    MaxPooling1D(pool_size=2),
-    Flatten(),
-    Dense(64, activation='relu'),
-    Dense(1)
-])
-
-# Compile the model
-model.compile(optimizer=Adam(learning_rate=0.01), loss='mean_squared_error')
-
-# Train the model
-model.fit(X_train, y_train, epochs=50, batch_size=32, validation_split=0.2, verbose=1)
+# Using XGBoost
+model = xgb.XGBRegressor(objective='reg:squarederror', n_estimators=100, learning_rate=0.01, random_state=42)
+model.fit(X_train, y_train)
 
 # Evaluate the model
-y_pred = model.predict(X_test).flatten()
+y_pred = model.predict(X_test)
 mae = mean_absolute_error(y_test, y_pred)
 mse = mean_squared_error(y_test, y_pred)
 
 print(f'Mean Absolute Error: {mae}')
 print(f'Mean Squared Error: {mse}')
 
-# Load and prepare upcoming month's expense data
-future_months = pd.DataFrame({
-    'Year': [2024] * 12,  # Adjust year as needed
-    'Month': list(range(1, 13))  # For every month in the year
-})
+# Predict monthly expenditures for the next 3 months
+# Create a DataFrame for future data (use zeros as placeholders)
+future_dates = pd.date_range(start=monthly_data.index[-1] + pd.DateOffset(months=1), periods=3, freq='M')
+future_data = pd.DataFrame(np.zeros((3, len(monthly_data.columns))), index=future_dates, columns=monthly_data.columns)
 
-# Assuming the upcoming months CSV has category columns with zero values
-future_months_expenses = pd.DataFrame(columns=category_columns)
-future_months_expenses = future_months_expenses.reindex(columns=category_columns, fill_value=0)
-future_data = pd.concat([future_months, future_months_expenses], axis=1).fillna(0)
-
-# Standardize future data and reshape
-future_data_scaled = scaler.transform(future_data.drop(columns=['Year', 'Month']))
-future_data_reshaped = np.expand_dims(future_data_scaled, axis=2)
+# Standardize future data
+future_data_scaled = scaler.transform(future_data)
 
 # Predict total expenses for the upcoming months
-y_pred_future = model.predict(future_data_reshaped).flatten()
-future_months['Predicted_Total'] = y_pred_future
+y_pred_future = model.predict(future_data_scaled)
+future_data['Predicted_Total'] = y_pred_future
 
-# Calculate the proportion of each category
-category_proportions = X.mean() / X.sum(axis=1).mean()
-
-# Predict category-wise expenses
-for category in category_columns:
-    future_months[f'Predicted_{category}'] = future_months['Predicted_Total'] * category_proportions[category]
-
-# Display predictions for upcoming months
-print(future_months[['Year', 'Month'] + [f'Predicted_{cat}' for cat in category_columns]])
+# Display predictions for future data
+print(future_data)

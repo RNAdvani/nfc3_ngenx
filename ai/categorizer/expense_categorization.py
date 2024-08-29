@@ -115,3 +115,6 @@ new_data = {
 
 predicted_category = classify_transaction(new_data)
 print(f"Predicted Category: {predicted_category}")
+categories = data['Category'].unique()
+print("All Categories in the dataset:")
+print(categories)
