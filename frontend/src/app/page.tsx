@@ -1,5 +1,6 @@
 import { auth } from '@/auth'
 import LogoutButton from '@/components/auth/logout-button'
+import Stock from '@/components/Stock'
 import React from 'react'
 
 const Home = async() => {
@@ -8,6 +9,7 @@ const Home = async() => {
     <div>
       {JSON.stringify(session)}
       <LogoutButton />
+      <Stock />
     </div>
   )
 }
