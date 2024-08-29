@@ -25,6 +25,6 @@ app.get("/",async (req,res)=>{
 app.use("/api/v1/stocks",yahooRoutes)
 app.use("/api/v1/watchlist",watchlistRoutes)
 
-app.listen(8000,()=>{
-    console.log('Server is running on port 8000');
+app.listen(4000,()=>{
+    console.log('Server is running on port',4000);
 })
