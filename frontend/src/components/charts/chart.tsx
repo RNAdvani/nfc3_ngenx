@@ -64,7 +64,7 @@ const StockChart= ({symbol,className}:{symbol:string,className?:string}) => {
                 },
                 y: {
                   beginAtZero: false,
-                  display: false, // Hide y-axis
+                  display: true, // Hide y-axis
                 },
               },
               plugins: {
@@ -89,8 +89,8 @@ const StockChart= ({symbol,className}:{symbol:string,className?:string}) => {
   }, [chartInstance]);
 
   return (
-    <div className={"w-[10rem] text-center   mx-auto mt-10"+className}>
-        {name}
+    <div className={"w-full p-2 text-center  mx-auto mt-10"+ className}>
+        <p className='text-[18px] font-semibold'>{name}</p>
       <canvas ref={chartRef} />
     </div>
   );
