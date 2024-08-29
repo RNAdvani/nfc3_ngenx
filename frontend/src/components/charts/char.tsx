@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns'; // Import the date adapter
 import axios from 'axios';
+import { GET_STOCK_DATA } from '@/apiUrl';
 
 const StockChart= ({symbol,className}:{symbol:string,className?:string}) => {
   const chartRef = useRef<HTMLCanvasElement>(null);
@@ -16,7 +17,7 @@ const StockChart= ({symbol,className}:{symbol:string,className?:string}) => {
         const interval = '2m';
 
         const res = await axios.get(
-          `http://localhost:8000/api/stockdata?symbol=${symbol}&period1=${period1}&period2=${period2}&interval=${interval}`
+          `${GET_STOCK_DATA}?symbol=${symbol}&period1=${period1}&period2=${period2}&interval=${interval}`
         );
 
         const result = res.data.chart.result[0];

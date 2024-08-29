@@ -2,34 +2,24 @@
 import { useState, useEffect } from 'react';
 import { StockPoint } from '@/types';
 import StockChart from './charts/char';
+import axios from 'axios';
+import { GET_TOP_GAINERS, SEARCH_STOCKS } from '@/apiUrl';
 
 export default function Stock() {
   const [data, setData] = useState<StockPoint[]>([]);
 
-//   useEffect(() => {
-//     async function fetchData() {
-//       const response = await fetch('/api/stock?symbol=RELIANCE.NS');
-//       const result = await response.json();
-      
-//       // Adjust mapping based on actual data structure
-//       const formattedData: StockPoint[] = result?.chart?.result[0]?.indicators?.quote[0]?.close.map((close: number, index: number) => ({
-//         date: result.chart.result[0].timestamp[index],
-//         close,
-//       }));
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios.get(`${SEARCH_STOCKS}?q=${"rel"}`);
+     console.log(response.data)
 
-//       console.log(result)
-      
-//     //   setData(formattedData);
+    }
 
-//     }
+    fetchData()
 
-//     fetchData()
-//     // const interval = setInterval(()=>{
-//     //     fetchData()
-//     // },10)
+  }, []);
 
-//     // return ()=>clearInterval(interval)
-//   }, []);
+
 
   return (
     <div>
