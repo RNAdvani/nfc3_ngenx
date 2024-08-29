@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react';
 import { StockPoint } from '@/types';
-import StockChart from './charts/char';
+import StockChart from './charts/chart';
 import axios from 'axios';
 import { GET_TOP_GAINERS, SEARCH_STOCKS } from '@/apiUrl';
 
