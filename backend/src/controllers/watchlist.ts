@@ -2,18 +2,6 @@ import { ErrorHandler } from "../lib/ErrorHandler";
 import { TryCatch } from "../lib/TryCatch";
 import Watchlist from "../models/watchlist";
 
-
-export const createWatchlist = TryCatch(async (req, res, next) => {
-    const { userId } = req.body;
-
-    const newWatchlist = await Watchlist.create({
-        userId,
-        words: []
-    });
-
-    return res.status(201).json({ success:true ,message: "Watchlist created successfully", watchlist: newWatchlist });
-});
-
 export const addWatchlistStock = TryCatch(async (req, res, next) => {
     const { userId, stock } = req.body;
 
@@ -23,7 +11,15 @@ export const addWatchlistStock = TryCatch(async (req, res, next) => {
     });
 
     if (!watchlist) {
-        return next(new ErrorHandler(404,"Watchlist not found"));
+        const newWatchlist = await Watchlist.create({
+            userId,
+            stocks: [stock]
+        });
+        return res.status(201).json({ success:true ,message: "Watchlist created successfully", watchlist: newWatchlist });
+    }
+
+    if(watchlist.stocks.includes(stock)){
+        return next(new ErrorHandler(400, "Stock already exists in watchlist"));
     }
 
     watchlist.stocks.push(stock);
@@ -43,7 +39,6 @@ export const removeWatchlistStock = TryCatch(async (req, res, next) => {
     if (!watchlist) {
         return next(new ErrorHandler(404,"Watchlist not found"));
     }
-
     watchlist.stocks = watchlist.stocks.filter((s) => s !== stock);
 
     await watchlist.save();
