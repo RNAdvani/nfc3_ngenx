@@ -1,3 +1,5 @@
+from fastapi import FastAPI
+from pydantic import BaseModel
 import yfinance as yf
 import numpy as np
 import pandas as pd
@@ -13,6 +15,8 @@ from transformers import RobertaTokenizer, RobertaForSequenceClassification
 import torch
 from GoogleNews import GoogleNews
 from collections import Counter
+import os
+from typing import Optional
 
 # Configure the Gemini API
 genai.configure(api_key="AIzaSyDWwTj6w7tRJOpmgU6102GaIXYu3FdDM-0")
@@ -24,7 +28,9 @@ model = RobertaForSequenceClassification.from_pretrained('cardiffnlp/twitter-rob
 # Initialize the Google News scraper
 googlenews = GoogleNews(lang='en', period='1d')  # Set language and period
 
-# Functions for component 1
+app = FastAPI()
+
+# Function definitions (same as before)
 def fetch_stock_data(company, start_date, end_date):
     data = yf.download(company, start=start_date, end=end_date)
     if data.empty:
@@ -99,11 +105,9 @@ def analyze_sentiment(text):
     sentiment_labels = ['Negative', 'Neutral', 'Positive']
     return sentiment_labels[predicted_label], probabilities
 
-def main():
+@app.get("/sentiment")
+def get_conclusive_sentiment(company: str = 'GOOGL', start_date: str = '2012-01-01', end_date: str = '2024-08-28'):
     # Stock data and prediction
-    company = 'GOOGL'
-    start_date = '2012-01-01'
-    end_date = '2024-08-28'
     data = fetch_stock_data(company, start_date, end_date)
     data = feature_engineering(data)
     X_train, X_test, y_train, y_test = prepare_data(data)
@@ -115,8 +119,7 @@ def main():
     
     # Sentiment analysis of stock prediction summary
     sentiment_summary, _ = analyze_sentiment(analysis_result)
-    print(f"Sentiment of the stock prediction summary: {sentiment_summary}")
-
+    
     # News sentiment analysis
     googlenews.search(company)
     results = googlenews.results()
@@ -125,16 +128,10 @@ def main():
         title = article['title']
         sentiment, _ = analyze_sentiment(title)
         sentiment_counter[sentiment] += 1
-        print(f"Title: {title}")
-        print(f"Sentiment: {sentiment}")
-    
+
     # Determine overall sentiment from news
     most_common_sentiment, count = sentiment_counter.most_common(1)[0]
-    total_articles = sum(sentiment_counter.values())
-    print(f"Overall Sentiment Analysis for the articles:")
-    print(f"Most Common Sentiment: {most_common_sentiment}")
-    print(f"Sentiment Counts: {dict(sentiment_counter)}")
-
+    
     # Combine results
     final_sentiment = "Neutral"
     if sentiment_summary == "Positive" and most_common_sentiment == "Positive":
@@ -142,7 +139,9 @@ def main():
     elif sentiment_summary == "Negative" and most_common_sentiment == "Negative":
         final_sentiment = "Negative"
     
-    print(f"Final Conclusive Sentiment: {final_sentiment}")
+    return {"Final Conclusive Sentiment": final_sentiment}
 
+# Run the FastAPI application
 if __name__ == "__main__":
-    main()
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
