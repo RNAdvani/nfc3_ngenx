@@ -2,6 +2,8 @@ import axios from "axios";
 import { TryCatch } from "../lib/TryCatch";
 import * as cheerio from 'cheerio';
 import { ErrorHandler } from "../lib/ErrorHandler";
+import yahooFinance from 'yahoo-finance2';
+
 
 interface StockInfo {
   name: string;
@@ -18,36 +20,12 @@ export const getStockOrMarketData = TryCatch(async(req,res,next)=>{
 
 export const getTopGainers = TryCatch(async(req,res,next)=>{
 
-  const { data } = await axios.get('https://www.moneycontrol.com/stocks/marketstats/nsegainer/index.php'); // Example URL
-  const $ = cheerio.load(data);
+    const queryOptions = { count: 10 };
+    const result = await yahooFinance.trendingSymbols('^NSEI', queryOptions);
 
-  console.log(data)
+    console.log(result);
 
-  const gainers: StockInfo[] = [];
-  const losers: StockInfo[] = [];
-
-  // Scrape top gainers
-  $('#nseGainer tbody tr').each((index, element) => {
-      const name = $(element).find('td:nth-child(1)').text().trim();
-      const change = $(element).find('td:nth-child(3)').text().trim();
-      gainers.push({ name, change });
-  });
-
-  // Scrape top losers
-  $('#nseLoser tbody tr').each((index, element) => {
-      const name = $(element).find('td:nth-child(1)').text().trim();
-      const change = $(element).find('td:nth-child(3)').text().trim();
-      losers.push({ name, change });
-  });
-
-  console.log('Top Gainers:');
-  gainers.forEach((stock) => console.log(`Name: ${stock.name}, Change: ${stock.change}`));
-
-  console.log('Top Losers:');
-  losers.forEach((stock) => console.log(`Name: ${stock.name}, Change: ${stock.change}`));
-
-
-  return res.json({ gainers, losers });
+  return res.json({ message:"Success" });
 
 });
 
