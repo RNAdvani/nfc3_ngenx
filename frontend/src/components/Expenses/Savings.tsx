@@ -33,7 +33,7 @@ const chartConfig = {
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig
-export function Component() {
+export function SavingGraph() {
   return (
     <Card>
       <CardHeader>
