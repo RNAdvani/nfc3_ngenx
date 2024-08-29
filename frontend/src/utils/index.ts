@@ -11,7 +11,7 @@ export const RegisterSchema = z.object({
 })
 
 export const ExpenseSchema = z.object({
-    date : z.string(),
+    date : z.date(),
     amount : z.number(),
     description : z.string(),
     category : z.string()

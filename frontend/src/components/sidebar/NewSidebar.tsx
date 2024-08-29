@@ -11,7 +11,7 @@ type SidebarProps = {
   className?: string;
 };
 
-export default function Sidebar({ className }: SidebarProps) {
+export default function NewSidebar({ className }: SidebarProps) {
   const { isMinimized, toggle } = useSidebar();
 
   const handleToggle = () => {
@@ -21,7 +21,7 @@ export default function Sidebar({ className }: SidebarProps) {
   return (
     <aside
       className={cn(
-        `relative  hidden h-screen flex-none border-r bg-card transition-[width] duration-500 md:block`,
+        `relative  hidden h-screen flex-none border-r bg-background transition-[width] ease-in duration-300 md:block`,
         !isMinimized ? "w-72" : "w-[72px]",
         className
       )}

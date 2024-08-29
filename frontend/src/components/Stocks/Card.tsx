@@ -60,13 +60,19 @@
 // }
 import StockChart from '@/components/charts/chart'
 import { Card, CardContent } from "@/components/ui/card";
+import { useRouter } from 'next/navigation';
 
-export function CardWithForm({ children}:{children?: React.ReactNode}) {
+export function CardWithForm({symbol}:{symbol:string}) {
+
+  const router = useRouter();
+
   return (
-    <Card className="grid-cols-1 bg-backgroundColor text-white border-none text-center ">
+    <Card onClick={()=>{
+      router.push(`/stock/${symbol}`)
+    }} className="grid-cols-1 bg-backgroundColor text-white border-none text-center ">
       <CardContent>
         <div className="space-y-2">
-            {children}
+          <StockChart symbol={symbol} />
         </div>
       </CardContent>
     </Card>

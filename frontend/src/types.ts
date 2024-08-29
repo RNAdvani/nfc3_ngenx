@@ -18,6 +18,11 @@ export interface NavItem {
   description?: string;
 }
 
+export interface DialogHandle{
+  open: () => void;
+  close: () => void;
+} 
+
 export interface StockQuote {
   regularMarketPrice: {
     raw: number;

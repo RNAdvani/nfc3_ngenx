@@ -15,18 +15,12 @@ const Dashboard = () => {
           <Input placeholder='Search Stocks' className='w-[15rem]' />
         </div>
         <div className='grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-4'>
-            <CardWithForm  >
-              <StockChart symbol='^NSEI' />
-            </CardWithForm>
-            <CardWithForm  >
-              <StockChart symbol='^BSESN' />
-            </CardWithForm>
-            <CardWithForm  >
-              <StockChart symbol='^NSEBANK' />
-            </CardWithForm>
-            <CardWithForm  >
-              <StockChart symbol='NVDA' />
-            </CardWithForm>
+            <CardWithForm  symbol='^NSEI' />
+            <CardWithForm symbol='^BSESN' />
+         
+            <CardWithForm symbol='^NSEBANK' /> 
+            <CardWithForm symbol='NVDA' />
+
         </div>
         <div className='grid gap-6 grid-cols-5'>
           <DataTableDemo />
