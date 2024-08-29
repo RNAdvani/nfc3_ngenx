@@ -22,8 +22,13 @@ const config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: '#000c08',
+        backgroundColor: '#000c08',
+        darkgreen: '#2d6a4f',
+        mediumgreen: '#40916c',
+        lightgreen: '#52b788',
+        verylightgreen: '#d8f3dc',
+        foreground: "#d8f3dc",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -57,6 +62,9 @@ const config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        'right-darkgreen': '4px 0 8px 0 rgba(45, 106, 79, 0.5)',
       },
       keyframes: {
         "accordion-down": {
