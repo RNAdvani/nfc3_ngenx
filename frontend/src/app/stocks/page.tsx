@@ -1,12 +1,12 @@
-
-"use client"
-import StockChart from '@/components/charts/chart'
-import { CardWithForm } from '@/components/Stocks/Card'
-import { DataTableDemo } from '@/components/Stocks/DataTable'
-import { WatchListTable } from '@/components/Stocks/WatchList'
-import { Input } from '@/components/ui/input'
-import React from 'react'
-
+"use client";
+import StockChart from "@/components/charts/chart";
+import { CardWithForm } from "@/components/Stocks/Card";
+import { DataTableDemo } from "@/components/Stocks/DataTable";
+import SearchBar from "@/components/Stocks/Search";
+import { WatchListTable } from "@/components/Stocks/WatchList";
+import { Input } from "@/components/ui/input";
+// Import the new SearchBar component
+import React from "react";
 
 const Dashboard = () => {
   return (
@@ -24,10 +24,13 @@ const Dashboard = () => {
         </div>
         <div className='grid gap-6 grid-cols-5'>
           <DataTableDemo />
+        </div>
+        <div className="flex-0.35">
+          <div className="font-bold text-lg mb-2">Buys</div>
           <WatchListTable />
         </div>
-    </div>
-  )
-}
+      </div>
+  );
+};
 
-export default Dashboard
+export default Dashboard;
