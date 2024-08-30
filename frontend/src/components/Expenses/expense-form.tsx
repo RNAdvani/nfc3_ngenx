@@ -49,10 +49,10 @@ const ExpenseForm = () => {
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
-                      variant={"outline"}
+                      variant={"default"}
                       className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
+                        "w-full pl-3 text-left font-normal",
+                        !field.value && ""
                       )}
                     >
                       {field.value ? (
@@ -60,7 +60,7 @@ const ExpenseForm = () => {
                       ) : (
                         <span>Pick a date</span>
                       )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      <CalendarIcon className="ml-auto bg-background text-darkgreen h-4 w-4 opacity-50" />
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
@@ -93,8 +93,8 @@ const ExpenseForm = () => {
                         <FormItem>
                             <FormLabel>Category</FormLabel>
                             <FormControl>
-                                <Input {...field} placeholder='Food' type="text" /> 
                             </FormControl>
+                                <Input {...field} placeholder='Food' type="text" /> 
                             <FormMessage />
                         </FormItem>
                     )} />
@@ -102,7 +102,7 @@ const ExpenseForm = () => {
                         <FormItem>
                             <FormLabel>Description</FormLabel>
                             <FormControl>
-                                <Textarea  {...field} placeholder='Describe...' className='resize-none' /> 
+                                <Textarea  {...field} placeholder='Describe...' className='resize-none h-[10rem]' /> 
                             </FormControl>
                             <FormMessage />
                         </FormItem>

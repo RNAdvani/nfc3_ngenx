@@ -66,7 +66,7 @@ const SearchBar: React.FC = () => {
           type="text"
           onChange={handleChange}
           placeholder="Search..."
-          className="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#000c08] text-white"
+          className="w-full placeholder:text-verylightgreen py-2 pl-10 pr-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#000c08] text-white"
         />
         {query && searchResults && <div className="absolute bg-background mt-1 rounded-lg w-full max-h-[10rem] overflow-y-scroll no-scrollbar">
             {
