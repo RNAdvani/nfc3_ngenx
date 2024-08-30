@@ -16,3 +16,10 @@ export const ExpenseSchema = z.object({
     description : z.string(),
     category : z.string()
 })
+
+export const SimulateSchema = z.object({
+    amount : z.number(),
+    fraction_of_amount : z.number(),
+    loss_percentage : z.number(),
+    profit_percentage : z.number()
+})

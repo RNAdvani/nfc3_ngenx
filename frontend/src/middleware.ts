@@ -5,7 +5,6 @@ import { authRoutes } from "./routes";
 export default auth((req)=>{
     const nextUrl = new URL(req.nextUrl);
     const isLoggedIn = !!req.auth;
-    const publicRoute = "/"
     const apiAuthPrefix = "/api/auth"
     const isApiRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
@@ -15,7 +14,7 @@ export default auth((req)=>{
     }
     
     if(isLoggedIn){
-        if(isAuthRoute) return NextResponse.redirect(new URL("/", nextUrl))
+        if(isAuthRoute) return NextResponse.redirect(new URL("/dashboard", nextUrl))
     }
     return ;
 })

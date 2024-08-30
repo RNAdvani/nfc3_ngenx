@@ -7,6 +7,12 @@ import { SEARCH_STOCKS } from "@/apiUrl";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { SignOut } from '@/actions/auth'
+import { Button } from "../ui/button";
+import { BrainCircuitIcon } from "lucide-react";
+import { useDialog } from "@/hooks/useDialog";
+import { DialogHandle } from "@/types";
+import CustomDialog from "../CustomDialog";
+import SimulateForm from "../simulate/SimulateForm";
 
 interface searchItem {
   symbol: string;
@@ -59,9 +65,14 @@ const SearchBar: React.FC = () => {
     }
   },[query])
 
+  const dialogRef = React.useRef<DialogHandle>(null);
+  const [handleOpenDialog,handleCloseDialog] = useDialog(dialogRef);
+
   return (
-    <div className=" top-4 right-4 flex items-center space-x-4 p-2">
-      <div className="relative w-full max-w-xs">
+    <div className=" w-full justify-between top-4 right-4 flex items-center space-x-4 p-2">
+            <Button onClick={handleOpenDialog} className='bg-darkgreen'><BrainCircuitIcon /> Simulate</Button>  
+      <div className="flex gap-2 items-center">
+      <div className="relative  w-full max-w-xs">
         <Input
           type="text"
           onChange={handleChange}
@@ -98,6 +109,11 @@ const SearchBar: React.FC = () => {
       >
         Logout
       </button>
+      </div>
+
+      <CustomDialog ref={dialogRef} >
+            <SimulateForm />
+      </CustomDialog>
     </div>
   );
 };

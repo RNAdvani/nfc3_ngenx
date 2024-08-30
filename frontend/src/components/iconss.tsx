@@ -29,6 +29,7 @@ import {
   User2Icon,
   UserX2Icon,
   X,
+  BrainCircuitIcon
 } from "lucide-react";
 
 export type Icon = LucideIcon;

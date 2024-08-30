@@ -8,3 +8,4 @@ export const ANALYZE_STOCK = `${baseUrl}/${version}/stocks/analyze`;
 export const ADD_TO_WATCHLIST = `${baseUrl}/${version}/watchlist/addStock`;
 export const REMOVE_FROM_WATCHLIST = `${baseUrl}/${version}/watchlist/removeStock`;
 export const GET_WATCHLIST = `${baseUrl}/${version}/watchlist/getWatchList?userId=`;
+export const SIMULATE = `${baseUrl}/${version}/simulate`;

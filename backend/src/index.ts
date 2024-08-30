@@ -5,6 +5,7 @@ import { yahooRoutes } from "./routes/yahoo";
 import { puppeteer } from "./lib/puppeteer";
 import { connectDb } from "./lib/db";
 import { watchlistRoutes } from "./routes/watchlist";
+import { simulate } from "./controllers/simulate";
 
 
 const app = express();
@@ -24,6 +25,7 @@ app.get("/",async (req,res)=>{
 
 app.use("/api/v1/stocks",yahooRoutes)
 app.use("/api/v1/watchlist",watchlistRoutes)
+app.post("/api/v1/simulate",simulate)
 
 app.listen(4000,()=>{
     console.log('Server is running on port',4000);

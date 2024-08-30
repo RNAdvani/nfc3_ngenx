@@ -9,6 +9,7 @@ import {
   Star,
   X,
 } from "lucide-react";
+import Link from "next/link";
 
 const menuItems = [
   {
@@ -74,13 +75,19 @@ export function LandinngPageOne() {
               ))}
             </ul>
           </div>
-          <div className="hidden lg:block">
-            <button
+          <div className="hidden  lg:flex gap-2">
+            <Link href="/auth/register"
               type="button"
-              className="rounded-md bg-[#2d6a4f] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#2d6a4f]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2d6a4f]"
+              className="rounded-md bg-background text-[#2d6a4f] px-3 py-2 text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2d6a4f]"
             >
-              Login/SignUp
-            </button>
+              Sign Up
+            </Link>
+            <Link href="/auth/login"
+              type="button"
+              className="rounded-md bg-[#2d6a4f] px-3 py-2 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2d6a4f]"
+            >
+              Login
+            </Link>
           </div>
           <div className="lg:hidden">
             <Menu onClick={toggleMenu} className="h-6 w-6 cursor-pointer" />
