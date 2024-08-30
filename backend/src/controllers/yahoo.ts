@@ -19,13 +19,34 @@ export const getStockOrMarketData = TryCatch(async(req,res,next)=>{
 });
 
 export const getTopGainers = TryCatch(async(req,res,next)=>{
+  const url = 'https://www.nseindia.com/api/live-analysis-variations?index=gainers';
 
-    const queryOptions = { count: 10 };
-    const result = await yahooFinance.trendingSymbols('^NSEI', queryOptions);
+  const response = await axios.get(url, {
+      headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Connection': 'keep-alive',
+          'DNT': '1',
+          'Upgrade-Insecure-Requests': '1',
+      },
+  });
 
-    console.log(result);
+  console.log(response.data);
 
-  return res.json({ message:"Success" });
+  
+  // Parsing the response to get the top gainers
+  const topGainers = response.data.data.map((stock:any) => ({
+      symbol: stock.symbol,
+      name: stock.meta.companyName,
+      lastPrice: stock.priceInfo.lastPrice,
+      change: stock.priceInfo.change,
+      percentageChange: stock.priceInfo.pChange,
+  }));
+
+  console.log(topGainers);
+
+  return res.json({ gainers : response.data });
 
 });
 

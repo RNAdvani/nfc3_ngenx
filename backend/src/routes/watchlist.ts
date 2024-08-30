@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/getWatchList",getWatchlist);
 router.post("/addStock",addWatchlistStock);
-router.get("/removeStock",removeWatchlistStock);
+router.post("/removeStock",removeWatchlistStock);
 
 
 export { router as watchlistRoutes };

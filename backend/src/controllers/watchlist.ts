@@ -48,14 +48,14 @@ export const removeWatchlistStock = TryCatch(async (req, res, next) => {
 });
 
 export const getWatchlist = TryCatch(async (req, res, next) => {
-    const { userId } = req.body;
+    const { userId } = req.query;
 
     const watchlist = await Watchlist.findOne({
         userId
     });
 
     if (!watchlist) {
-        return next(new ErrorHandler(404,"Watchlist not found"));
+        return res.status(200).json({success:true, watchlist: [] });
     }
 
     return res.status(200).json({success:true, watchlist });
