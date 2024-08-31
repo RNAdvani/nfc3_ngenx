@@ -1,5 +1,9 @@
+<<<<<<< Updated upstream
 "use client";
 import CustomDialog from '@/components/CustomDialog';
+=======
+import { DataTableDemo } from '@/components/Expenses/Datatable'
+>>>>>>> Stashed changes
 import ExpenseForm from '@/components/Expenses/expense-form'
 import { ExpensesGraph } from '@/components/Expenses/Expenses'
 import { MonthlyGraph } from '@/components/Expenses/Monthly'
@@ -17,10 +21,16 @@ const ExpensePage = () => {
 
 
   return (
+<<<<<<< Updated upstream
     <div className='w-full p-6 flex flex-col gap-2'>
       <div className="flex justify-end w-full">
         <Button onClick={handleOpenDialog} className='bg-darkgreen'>Add expense</Button>
       </div>
+=======
+    <div>
+      <ExpenseForm />
+      <DataTableDemo />
+>>>>>>> Stashed changes
       <ExpensesGraph />
       <MonthlyGraph />
       <SavingGraph />
