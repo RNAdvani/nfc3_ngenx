@@ -64,7 +64,7 @@ export const LoginForm = () => {
                     )} />
                     <Button
                         type='submit'
-                        className='w-full'
+                        className='w-full px-4'
                     >
                         Login
                     </Button>

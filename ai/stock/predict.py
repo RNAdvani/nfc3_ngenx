@@ -15,6 +15,8 @@ from transformers import RobertaTokenizer, RobertaForSequenceClassification
 import torch
 from GoogleNews import GoogleNews
 from collections import Counter
+import io
+import base64
 import os
 from typing import Optional
 
@@ -30,7 +32,7 @@ googlenews = GoogleNews(lang='en', period='1d')  # Set language and period
 
 app = FastAPI()
 
-# Function definitions (same as before)
+# Function definitions
 def fetch_stock_data(company, start_date, end_date):
     data = yf.download(company, start=start_date, end=end_date)
     if data.empty:
@@ -75,7 +77,7 @@ def plot_predictions(data, y_test, predictions):
     plt.legend()
     image_path = 'stock_predictions.png'
     plt.savefig(image_path)
-    plt.show()
+    plt.close()  # Close the plot to free up memory
     return image_path
 
 def analyze_with_gemini(image_path, company):
@@ -139,7 +141,14 @@ def get_conclusive_sentiment(company: str = 'GOOGL', start_date: str = '2012-01-
     elif sentiment_summary == "Negative" and most_common_sentiment == "Negative":
         final_sentiment = "Negative"
     
-    return {"Final Conclusive Sentiment": final_sentiment}
+    # Convert image to base64
+    with open(image_path, "rb") as image_file:
+        img_base64 = base64.b64encode(image_file.read()).decode('utf-8')
+
+    return {
+        "Final Conclusive Sentiment": final_sentiment,
+        "Image": img_base64
+    }
 
 # Run the FastAPI application
 if __name__ == "__main__":

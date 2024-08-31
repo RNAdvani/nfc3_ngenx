@@ -18,8 +18,8 @@ export const ExpenseSchema = z.object({
 })
 
 export const SimulateSchema = z.object({
-    amount : z.number(),
-    fraction_of_amount : z.number(),
-    loss_percentage : z.number(),
-    profit_percentage : z.number()
+    amount : z.any(),
+    fraction_of_amount : z.any(),
+    loss_percentage : z.any(),
+    profit_percentage : z.any()
 })

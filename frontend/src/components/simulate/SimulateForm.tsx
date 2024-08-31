@@ -47,10 +47,14 @@ const SimulateForm = () => {
        try {
         const res = await axios.post(SIMULATE,{
             symbol,
-            initial_capital:amount,
-            investment_fraction:fraction_of_amount,
-            stop_loss_threshold:loss_percentage,
-            profit_target:profit_percentage,
+            initial_capital:Number(amount),
+            investment_fraction:Number(fraction_of_amount),
+            stop_loss_threshold:(loss_percentage),
+            profit_target:(profit_percentage),
+        },{
+            headers:{
+                'Content-Type':'application/json'
+            }
         });
         setResult(res.data);
        } catch (error) {
@@ -118,7 +122,7 @@ const SimulateForm = () => {
                         <FormItem>
                             <FormLabel>Amount</FormLabel>
                             <FormControl>
-                                <Input {...field} placeholder='9999' /> 
+                                <Input {...field} placeholder='9999' type='number' /> 
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -127,7 +131,7 @@ const SimulateForm = () => {
                         <FormItem>
                             <FormLabel>Fraction of amount</FormLabel>
                             <FormControl>
-                                <Input {...field} placeholder='9999' type='number'  /> 
+                                <Input {...field} placeholder='9999'   /> 
                             </FormControl>
                             <FormMessage />
                         </FormItem>
